@@ -127,7 +127,7 @@ Los checkpoints pesados no se suben al repositorio. Solo se conserva `.gitkeep` 
 Clonar el repositorio:
 
 ```bash
-git clone <url-del-repositorio>
+git clone https://github.com/Axel-Pariona/Blood-Cell-Deep-Learning-Comparison.git
 cd Blood-Cell-Deep-Learning-Comparison
 ```
 

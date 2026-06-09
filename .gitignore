@@ -1,76 +1,27 @@
-# =========================
-# Python
-# =========================
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-
-# Entornos virtuales
 .venv/
 venv/
-env/
-ENV/
+__pycache__/
+*.pyc
+.env
+.vscode/
 .ipynb_checkpoints/
+.DS_Store
+*.Zone.Identifier
 
-# =========================
-# Google Colab / Jupyter
-# =========================
-*.ipynb_checkpoints
-.cache/
-.config/
-
-# =========================
 # Kaggle credentials
-# =========================
 kaggle.json
-.kaggle/
 
-# =========================
-# Dataset
-# =========================
+# Downloaded dataset
 data/blood_cells/
-data/*.zip
-data/**/*.zip
-data/dataset-master/
-data/dataset2-master/
 
-# Mantener scripts de descarga
-!data/download_data.sh
-!data/download_data.ps1
-
-# =========================
-# Resultados pesados
-# =========================
+# Model checkpoints and large model files
 results/checkpoints/*
+!results/checkpoints/.gitkeep
 *.pth
 *.pt
 *.ckpt
 *.h5
 
-# Permitir mantener la carpeta checkpoints sin modelos pesados
-!results/checkpoints/.gitkeep
-
-# =========================
-# Resultados ligeros
-# =========================
-# Se permite subir figures y metrics porque son parte del análisis.
-# Si alguna figura pesa demasiado, se puede excluir manualmente.
-!results/figures/
-!results/metrics/
-
-# =========================
-# Sistema operativo / IDE
-# =========================
-.DS_Store
-Thumbs.db
-.vscode/
-.idea/
-
-# =========================
-# Logs
-# =========================
+# Optional logs
+logs/
 *.log
-wandb/
-runs/

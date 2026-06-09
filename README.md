@@ -1,213 +1,25 @@
-# Clasificación de Células Sanguíneas con CNN, Batch Normalization y Transfer Learning
+# Blood Cell Deep Learning Comparison
 
-Este repositorio contiene la implementación y análisis de la PC2 del curso **Introduction to Deep Learning**. El objetivo es entrenar, evaluar y comparar arquitecturas clásicas de redes neuronales convolucionales sobre un dataset real de imágenes microscópicas médicas.
+Blood Cell Deep Learning Comparison es un proyecto académico de Deep Learning aplicado a clasificación de imágenes de células sanguíneas. El proyecto compara distintos enfoques de redes neuronales convolucionales, incluyendo modelos CNN base, uso de Batch Normalization y Transfer Learning con ResNet18.
 
-El proyecto aborda tres componentes principales:
+El trabajo fue desarrollado como parte de una actividad académica de Deep Learning, con el objetivo de evaluar cómo diferentes arquitecturas y técnicas de entrenamiento afectan el rendimiento de un modelo de clasificación de imágenes.
 
-- Implementación desde cero de LeNet-5 y VGG-11 simplificado.
-- Análisis del efecto de Batch Normalization.
-- Aplicación de Transfer Learning con ResNet-18 preentrenada en ImageNet.
+## Objetivo del proyecto
 
----
+El objetivo principal es comparar el desempeño de diferentes modelos de clasificación de imágenes aplicados a un dataset de células sanguíneas.
 
-## Dataset
+El proyecto busca demostrar:
 
-Se utilizó el **Blood Cell Image Dataset** de Kaggle.
+- Exploración inicial del dataset.
+- Preparación de datos para clasificación de imágenes.
+- Entrenamiento de modelos CNN.
+- Comparación entre una arquitectura tipo LeNet y una arquitectura tipo VGG.
+- Evaluación del impacto de Batch Normalization.
+- Análisis del learning rate.
+- Aplicación de Transfer Learning con ResNet18.
+- Registro de métricas y visualizaciones de resultados.
 
-- **Clases:** EOSINOPHIL, LYMPHOCYTE, MONOCYTE y NEUTROPHIL.
-- **Tipo de imágenes:** RGB.
-- **Tamaño original:** 320x240 píxeles.
-- **Cantidad aproximada:** 12,500 imágenes.
-- **Split:** Train/Test provisto por el dataset.
-
-Para los modelos entrenados desde cero se redimensionaron las imágenes a **64x64x3**.  
-Para Transfer Learning con ResNet-18 se utilizaron imágenes de **224x224x3**.
-
----
-
-## Estructura del Proyecto
-
-```text
-dl-semana6-Acunia_Chui_Meza_Pariona/
-├── README.md
-├── requirements.txt
-├── .gitignore
-├── data/
-│   ├── download_data.sh
-│   └── download_data.ps1
-├── notebooks/
-│   ├── 01_eda.ipynb
-│   ├── 02_lenet_vgg.ipynb
-│   └── 03_transfer.ipynb
-├── src/
-│   ├── models.py
-│   ├── train.py
-│   └── utils.py
-├── results/
-│   ├── figures/
-│   └── metrics/
-└── informe.pdf
-```
-
----
-
-## Instalación
-
-### 1. Clonar el repositorio
-
-```bash
-git clone https://github.com/Axel-Pariona/dl-semana6-Acunia_Chui_Meza_Pariona.git
-cd dl-semana6-Acunia_Chui_Meza_Pariona
-```
-
-### 2. Crear entorno virtual
-
-En Windows:
-
-```powershell
-python -m venv .venv
-.\.venv\Scripts\activate
-```
-
-En Linux/Mac:
-
-```bash
-python -m venv .venv
-source .venv/bin/activate
-```
-
-### 3. Instalar dependencias
-
-```bash
-pip install --upgrade pip
-pip install -r requirements.txt
-```
-
----
-
-## Descarga del Dataset
-
-Para descargar el dataset se necesita configurar previamente la API de Kaggle.
-
-El archivo `kaggle.json` debe estar ubicado en:
-
-```text
-C:\Users\<usuario>\.kaggle\kaggle.json
-```
-
-En Windows:
-
-```powershell
-powershell -ExecutionPolicy Bypass -File data/download_data.ps1
-```
-
-En Linux, Git Bash o Google Colab:
-
-```bash
-bash data/download_data.sh
-```
-
-Luego de la descarga, la ruta esperada es:
-
-```text
-data/blood_cells/dataset2-master/dataset2-master/images/
-```
-
----
-
-## Ejecución de Notebooks
-
-Los notebooks deben ejecutarse en este orden:
-
-1. `notebooks/01_eda.ipynb`  
-   Análisis exploratorio del dataset: distribución por clase, visualización de ejemplos, tamaños de imagen y revisión de imágenes corruptas.
-
-2. `notebooks/02_lenet_vgg.ipynb`  
-   Implementación y entrenamiento desde cero de LeNet-5 y VGG-11 simplificado, con y sin Batch Normalization. También incluye el análisis del efecto de Batch Normalization.
-
-3. `notebooks/03_transfer.ipynb`  
-   Aplicación de Transfer Learning con ResNet-18 preentrenada en ImageNet mediante tres estrategias: Feature Extraction, Fine-tuning parcial y Fine-tuning total.
-
----
-
-## Resultados Principales
-
-### Tarea 1: CNN entrenadas desde cero
-
-| Modelo | Learning Rate | Parámetros Entrenables | Test Accuracy | Test Loss |
-|---|---:|---:|---:|---:|
-| LeNet | 0.001 | 337,976 | 74.79% | 0.7932 |
-| LeNet + BN | 0.001 | 338,020 | 51.31% | 3.5496 |
-| VGG11Small | 0.001 | 2,963,396 | 34.38% | 1.3740 |
-| **VGG11Small + BN** | 0.001 | 2,966,148 | **83.31%** | 1.3317 |
-
-El mejor modelo entrenado desde cero fue **VGG11Small_BN**, alcanzando **83.31% de accuracy en test**.
-
----
-
-### Tarea 2: Análisis de Batch Normalization
-
-| Modelo | Batch Normalization | Learning Rate | Test Accuracy | Test Loss |
-|---|---|---:|---:|---:|
-| VGG11Small | Sin BN | 0.001 | 25.05% | 1.3864 |
-| VGG11Small + BN | Con BN | 0.001 | 80.18% | 0.5163 |
-| VGG11Small | Sin BN | 0.003 | 25.05% | 1.3868 |
-| VGG11Small + BN | Con BN | 0.003 | 69.00% | 1.0727 |
-| VGG11Small | Sin BN | 0.010 | 25.05% | 1.3864 |
-| VGG11Small + BN | Con BN | 0.010 | 71.93% | 0.4776 |
-
-Los modelos sin Batch Normalization permanecieron cerca del azar, aproximadamente 25% para un problema de 4 clases. En cambio, las variantes con BN lograron aprender patrones discriminativos, especialmente con `LR=0.001`.
-
----
-
-### Tarea 3: Transfer Learning con ResNet-18
-
-| Modelo / Estrategia | Learning Rate | Parámetros Entrenables | Test Accuracy | Test Loss |
-|---|---:|---:|---:|---:|
-| VGG11Small_BN desde cero | 0.001 | 2,966,148 | 83.31% | 1.3317 |
-| ResNet18 Feature Extraction | 0.001 | 2,052 | 59.43% | - |
-| ResNet18 Fine-tuning Parcial | 0.0001 | 10,495,492 | 81.54% | - |
-| **ResNet18 Fine-tuning Total** | 0.00001 | 11,178,564 | **85.77%** | 0.5750 |
-
-El mejor modelo global fue **ResNet18 con Fine-tuning Total**, alcanzando **85.77% de accuracy en test**.
-
----
-
-## Principales Hallazgos
-
-- **Batch Normalization fue clave en VGG11Small.**  
-  VGG11Small sin BN obtuvo 34.38% en test, mientras que VGG11Small_BN alcanzó 83.31%.
-
-- **Batch Normalization no siempre mejora modelos pequeños.**  
-  En LeNet-5, la versión sin BN obtuvo 74.79%, mientras que LeNet_BN alcanzó 51.31%.
-
-- **El learning rate sigue siendo crítico.**  
-  BN mejoró la estabilidad del entrenamiento, pero el rendimiento siguió dependiendo de una selección adecuada del learning rate.
-
-- **Transfer Learning obtuvo el mejor desempeño global.**  
-  ResNet18 con Fine-tuning Total alcanzó 85.77% de accuracy en test.
-
-- **Recomendación para datos médicos limitados.**  
-  Aunque Fine-tuning Total obtuvo la mejor métrica experimental, en un escenario médico con pocos datos se recomienda iniciar con Fine-tuning Parcial, ya que reduce el número de parámetros entrenables y disminuye el riesgo de sobreajuste.
-
-- **Análisis por clase.**  
-  El mejor modelo clasificó correctamente la clase LYMPHOCYTE, mientras que la mayor confusión se presentó entre EOSINOPHIL y NEUTROPHIL.
-
----
-
-## Reproducibilidad
-
-Para asegurar reproducibilidad:
-
-- Se fijó una semilla global `seed=42`.
-- Se usó `torch.manual_seed`.
-- Se controló la división train/validation.
-- Se guardaron checkpoints del mejor modelo según accuracy de validación.
-- Las métricas y figuras se almacenaron en `results/metrics/` y `results/figures/`.
-
----
-
-## Tecnologías Utilizadas
+## Tecnologías utilizadas
 
 - Python
 - PyTorch
@@ -216,14 +28,295 @@ Para asegurar reproducibilidad:
 - Pandas
 - Matplotlib
 - Scikit-learn
+- Jupyter Notebook
 - Kaggle API
-- Google Colab / VS Code
 
----
+## Dataset
+
+El proyecto utiliza un dataset de imágenes de células sanguíneas descargado desde Kaggle.
+
+El dataset no se sube directamente al repositorio para evitar archivos pesados. En su lugar, se incluyen scripts de descarga en la carpeta `data/`.
+
+Para más detalle sobre la estructura esperada del dataset, revisar:
+
+[`data/README.md`](data/README.md)
+
+## Estructura del proyecto
+
+```txt
+Blood-Cell-Deep-Learning-Comparison/
+  README.md
+  requirements.txt
+  .gitignore
+
+  data/
+    README.md
+    download_data.ps1
+    download_data.sh
+
+  docs/
+    final_report.pdf
+    methodology.md
+
+  notebooks/
+    00_colab_reproducible.ipynb
+    01_eda.ipynb
+    02_lenet_vgg.ipynb
+    03_transfer_learning.ipynb
+
+  results/
+    checkpoints/
+      .gitkeep
+    figures/
+    metrics/
+
+  src/
+    models.py
+    train.py
+    utils.py
+```
+
+## Descripción de carpetas
+
+### `data/`
+
+Contiene scripts para descargar el dataset y documentación sobre su estructura esperada.
+
+Archivos principales:
+
+- `download_data.sh`: script de descarga para Linux, macOS o WSL.
+- `download_data.ps1`: script de descarga para Windows PowerShell.
+- `README.md`: explicación de la fuente de datos, descarga y organización esperada.
+
+### `docs/`
+
+Contiene documentación del proyecto.
+
+- `final_report.pdf`: informe académico final.
+- `methodology.md`: explicación metodológica del análisis, entrenamiento y comparación de modelos.
+
+### `notebooks/`
+
+Contiene los notebooks principales del proyecto.
+
+- `00_colab_reproducible.ipynb`: versión reproducible para Google Colab.
+- `01_eda.ipynb`: análisis exploratorio del dataset.
+- `02_lenet_vgg.ipynb`: entrenamiento y comparación de modelos CNN base.
+- `03_transfer_learning.ipynb`: entrenamiento con Transfer Learning usando ResNet18.
+
+### `src/`
+
+Contiene código reutilizable del proyecto.
+
+- `models.py`: definición de arquitecturas.
+- `train.py`: funciones de entrenamiento y evaluación.
+- `utils.py`: utilidades para carga de datos, métricas y soporte general.
+
+### `results/`
+
+Contiene resultados generados durante los experimentos.
+
+- `figures/`: gráficas y visualizaciones.
+- `metrics/`: métricas exportadas.
+- `checkpoints/`: carpeta reservada para pesos de modelos entrenados.
+
+Los checkpoints pesados no se suben al repositorio. Solo se conserva `.gitkeep` para mantener la carpeta visible.
+
+## Instalación
+
+Clonar el repositorio:
+
+```bash
+git clone <url-del-repositorio>
+cd Blood-Cell-Deep-Learning-Comparison
+```
+
+Crear un entorno virtual:
+
+```bash
+python -m venv .venv
+```
+
+Activar el entorno virtual en Windows PowerShell:
+
+```powershell
+.venv\Scripts\activate
+```
+
+Activar el entorno virtual en Linux o WSL:
+
+```bash
+source .venv/bin/activate
+```
+
+Instalar dependencias:
+
+```bash
+pip install -r requirements.txt
+```
+
+## Descarga del dataset
+
+El dataset se descarga con los scripts ubicados en `data/`.
+
+En Windows PowerShell:
+
+```powershell
+cd data
+.\download_data.ps1
+```
+
+En Linux, macOS o WSL:
+
+```bash
+cd data
+bash download_data.sh
+```
+
+Para usar la Kaggle API, se requiere configurar previamente el archivo `kaggle.json`.
+
+Más información en:
+
+[`data/README.md`](data/README.md)
+
+## Ejecución de notebooks
+
+Se recomienda ejecutar los notebooks en este orden:
+
+```txt
+1. notebooks/01_eda.ipynb
+2. notebooks/02_lenet_vgg.ipynb
+3. notebooks/03_transfer_learning.ipynb
+```
+
+También se incluye una versión reproducible para Colab:
+
+```txt
+notebooks/00_colab_reproducible.ipynb
+```
+
+## Flujo general del proyecto
+
+```txt
+Descarga del dataset
+  ↓
+Análisis exploratorio
+  ↓
+Preprocesamiento y carga de imágenes
+  ↓
+Entrenamiento de CNN base
+  ↓
+Evaluación con y sin Batch Normalization
+  ↓
+Análisis de learning rate
+  ↓
+Transfer Learning con ResNet18
+  ↓
+Comparación de métricas
+  ↓
+Visualización de resultados
+```
+
+## Modelos evaluados
+
+El proyecto compara diferentes enfoques:
+
+### CNN tipo LeNet
+
+Modelo convolucional base utilizado como punto de partida para evaluar el desempeño inicial.
+
+### CNN tipo VGG simplificada
+
+Arquitectura más profunda inspirada en VGG, utilizada para analizar mejoras en extracción de características.
+
+### Modelos con Batch Normalization
+
+Variantes que incorporan Batch Normalization para mejorar estabilidad del entrenamiento y convergencia.
+
+### Transfer Learning con ResNet18
+
+Modelo preentrenado utilizado como extractor de características para mejorar el rendimiento con menor costo de entrenamiento.
+
+## Resultados
+
+Los resultados se almacenan en:
+
+```txt
+results/
+  figures/
+  metrics/
+```
+
+Las figuras pueden incluir:
+
+- Curvas de entrenamiento.
+- Curvas de validación.
+- Comparaciones entre modelos.
+- Matrices de confusión.
+- Visualizaciones del dataset.
+
+Las métricas pueden incluir:
+
+- Accuracy.
+- Precision.
+- Recall.
+- F1-score.
+- Tiempo de entrenamiento.
+- Comparación entre configuraciones.
+
+## Reproducibilidad
+
+Para reproducir el proyecto:
+
+1. Instalar dependencias.
+2. Configurar Kaggle API.
+3. Descargar el dataset.
+4. Ejecutar los notebooks en orden.
+5. Revisar los resultados en `results/`.
+
+La carpeta `results/checkpoints/` está preparada para almacenar pesos de modelos, pero los archivos grandes están excluidos del repositorio mediante `.gitignore`.
+
+## Alcance del proyecto
+
+Este proyecto tiene fines académicos y experimentales.
+
+Incluye:
+
+- Comparación de modelos CNN.
+- Uso de Batch Normalization.
+- Análisis de learning rate.
+- Transfer Learning.
+- Evaluación con métricas de clasificación.
+- Documentación de resultados.
+
+## Limitaciones
+
+- El rendimiento depende de la calidad y balance del dataset.
+- Los resultados pueden variar según hardware, semillas y configuración del entorno.
+- El dataset debe descargarse externamente.
+- Los checkpoints de modelos no se versionan en GitHub.
+- El proyecto no está orientado a diagnóstico médico ni uso clínico.
+- Las conclusiones corresponden a un contexto académico y experimental.
+
+## Posibles mejoras
+
+- Agregar control explícito de semillas para mayor reproducibilidad.
+- Exportar todos los resultados a CSV o JSON.
+- Incorporar más arquitecturas preentrenadas.
+- Realizar búsqueda de hiperparámetros.
+- Agregar validación cruzada.
+- Implementar Grad-CAM para interpretabilidad.
+- Crear un dashboard de resultados.
+- Automatizar entrenamiento desde scripts CLI.
+- Publicar un notebook resumen con las conclusiones finales.
+
+## Estado del proyecto
+
+Proyecto académico completo y reorganizado para presentación en GitHub.
 
 ## Autores
 
-- Acuña Villegas, Omar Junior
-- Chui Sanchez, Rafael Tomas
-- Meza Polo, Rodrigo Alejandro
-- Pariona Rojas, Axel Yamir
+- Omar Junior Acuña Villegas
+- Rafael Tomás Chui Sánchez
+- Sebastián Meza
+- Axel Yamir Pariona Rojas
